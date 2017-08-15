@@ -4,22 +4,25 @@ InstagramCaller is a Library used to Call Instagram API for ASP.Net MVC.Also, In
 # Usage
 To start use InstagramCaller you need to Create Instance of the InstagramCaller Class.
 
-//add Instagram as authenticatioin provider to your App
-//To do that Modyify the Startup.Auth.cs class 
-//Add required Scopes that your APP will access
+1. add Instagram as authenticatioin provider to your App
+To do that Modyify the Startup.Auth.cs class 
+Add required Scopes that your APP will access
+```C#
 string clientid = ConfigurationManager.AppSettings["clientid"].ToString();
 string clientsecret = ConfigurationManager.AppSettings["clientsecret"].ToString();
 app.UseInstagramInAuthentication(new InstagramAuthenticationOptions(){
                                     ClientId = clientid,
                                     ClientSecret = clientsecret,
                                     Scope = { "basic", "public_content", "follower_list", "comments", "relationships","likes" }
+```
 
-//InstagramCaller as a Property in the Conroller Class 
+2. InstagramCaller as a Property in the Conroller Class 
+```C#
 public static InstagramCaller.InstagramCaller _InstagramCaller { get; set; }
-
-//Override the OnActionExecuting method to check if the InstagramCaller instance is execit , if not use the ClientID, ClientSecret, UserAccessToken and UserID (Instagram's UserID) to create the InstagramCaller instance Once in the Controller Life Cycle.
-
-// Also, you can optionally add the Telemetry Client ID of Azure Application Insights APIs.
+```
+3. Override the OnActionExecuting method to check if the InstagramCaller instance is execit , if not use the ClientID, ClientSecret, UserAccessToken and UserID (Instagram's UserID) to create the InstagramCaller instance Once in the Controller Life Cycle.
+Also, you can optionally add the Telemetry Client ID of Azure Application Insights APIs.
+```C#
 protected override void OnActionExecuting(ActionExecutingContext filterContext)
 {
     if (_InstagramCaller == null)
@@ -41,9 +44,10 @@ protected override void OnActionExecuting(ActionExecutingContext filterContext)
         _InstagramCaller = new InstagramCaller.InstagramCaller(id, secret, long.Parse(userid), tokent, "APPLICATION_INSIGHTS_KEY");
     }
 }
-
-//add Claims to UserIdentity Class to attach the AccessToken and UserID (Instagram's UserID) to each User
-// To do that Modify IdentityModels.cs class 
+```
+4. add Claims to UserIdentity Class to attach the AccessToken and UserID (Instagram's UserID) to each User
+To do that Modify IdentityModels.cs class
+```c#
 public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
 {
 
@@ -55,8 +59,9 @@ public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<Applicat
     userIdentity.AddClaim(new Claim("_username", InstagramUserName));
     return userIdentity;
 }
-
-//add these methods as well to the ApplicationUser Class to help you set the token and profile pictures.
+```
+5. add these methods as well to the ApplicationUser Class to help you set the token and profile pictures.
+```c#
 public void setToken(string token) {
     InstagramAccessToken = token;
 }
@@ -65,9 +70,10 @@ public void setProfilePicture(string profilepicture)
 {
     InstagramProfilePicture = profilepicture;
 }
-
-//To fetch the new AccessToken in Case the User ReInvoke the App Authentication 
-//you need to modify the ExternalLogin method in AccountContrller
+```
+6. To fetch the new AccessToken in Case the User ReInvoke the App Authentication 
+you need to modify the ExternalLogin method in AccountContrller
+```c#
 public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
 {
     var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
@@ -99,10 +105,11 @@ public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
             return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
     }
 }
-
-//Then you can call the Instagram APIs using the InstagramCaller 
-//Here we retrive the UserBasicInfo and his media of the current logged user
+```
+7. Then you can call the Instagram APIs using the InstagramCaller 
+Here we retrive the UserBasicInfo and his media of the current logged user
+```c#
 InstagramCaller.ViewModels.UserInfo_Media userWithMedia = await _InstagramCaller.UsersEndPoint.Self_GetInfoandMedia();
-
+```
 
 
