@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace InstagramCaller.Models.Media
 {
-
+    public class Pagination
+    {
+        public string next_max_id { get; set; }
+        public string next_url { get; set; }
+    }
     public class User
     {
         public string id { get; set; }
@@ -156,12 +160,14 @@ namespace InstagramCaller.Models.Media
 
     public class MediaSearch
     {
+        public Pagination pagination { get; set; }
         public List<Data> data { get; set; }
         public Meta meta { get; set; }
     }
 
     public class UserMedia
     {
+        public Pagination pagination { get; set; }
         public List<Datum> data { get; set; }
         public Meta meta { get; set; }
     }

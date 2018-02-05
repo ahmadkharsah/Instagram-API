@@ -52,12 +52,12 @@ namespace InstagramCaller.Endpoints
         /// get current user info
         /// </summary>
         /// <returns>current user info</returns>
-        public async Task<Models.User.User> Self_GetInfo()
+        public async Task<Models.User.User> Self_GetInfo(string accesstoken)
         {
             Models.User.User basicinfo = new Models.User.User();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
@@ -117,10 +117,10 @@ namespace InstagramCaller.Endpoints
         /// <param name="max_id">max media id</param>
         /// <param name="min_id">min media id</param>
         /// <returns>user's media</returns>
-        public async Task<UserMedia> Self_GetMedia(int? count = 0, string max_id = "", string min_id = "")
+        public async Task<UserMedia> Self_GetMedia(string accesstoken,int? count = 0, string max_id = "", string min_id = "")
         {
             UserMedia media = new UserMedia();
-            string URL = _HttpClient.BaseAddress.AbsoluteUri + "users/self/media/recent/?access_token=" + _AccessToken;
+            string URL = _HttpClient.BaseAddress.AbsoluteUri + "users/self/media/recent/?access_token=" + accesstoken;
             if (max_id != "")
             {
                 URL += "&max_id=" + max_id;
@@ -208,13 +208,13 @@ namespace InstagramCaller.Endpoints
         /// get user info and media of current user
         /// </summary>
         /// <returns>user info and media for current user</returns>
-        public async Task<UserInfo_Media> Self_GetInfoandMedia()
+        public async Task<UserInfo_Media> Self_GetInfoandMedia(string accesstoken)
         {
             UserInfo_Media userwithmedia = new UserInfo_Media();
             try
             {
-                userwithmedia.UserInfo = await Self_GetInfo();
-                userwithmedia.Media = await Self_GetMedia();
+                userwithmedia.UserInfo = await Self_GetInfo(accesstoken);
+                userwithmedia.Media = await Self_GetMedia(accesstoken);
                 return userwithmedia;
             }
             catch (Exception ex)
@@ -263,12 +263,12 @@ namespace InstagramCaller.Endpoints
         /// get liked media by current user
         /// </summary>
         /// <returns>liked media by current user</returns>
-        public async Task<MediaSearch> Self_GetLikedMedia()
+        public async Task<MediaSearch> Self_GetLikedMedia(string accesstoken)
         {
             MediaSearch media = new MediaSearch();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/media/liked?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/media/liked?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();

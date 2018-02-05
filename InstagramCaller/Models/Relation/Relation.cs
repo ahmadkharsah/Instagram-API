@@ -8,6 +8,8 @@ namespace InstagramCaller.Models.Relation
 {
     public class Pagination
     {
+        public string next_cursor { get; set; }
+        public string next_url { get; set; }
     }
 
     public class Datum

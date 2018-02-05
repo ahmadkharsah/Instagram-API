@@ -23,13 +23,13 @@ namespace InstagramCaller
     public class InstagramCaller
     {
         //Azure Insights Telemetery Client
-        private TelemetryClient _Telemetryclient;  
+        private TelemetryClient _Telemetryclient;
 
         //Properties
         private string _ClientID { get; set; }
         private string _ClientSecret { get; set; }
-        private string _AccessToken { get; set; }
-        private long _UserID { get; set; }
+        public string _AccessToken { get; set; }
+        public long _UserID { get; set; }
 
         public UsersEndPoint UsersEndPoint { get; }
         public RelationsEndPoint RelationsEndPoint { get; }

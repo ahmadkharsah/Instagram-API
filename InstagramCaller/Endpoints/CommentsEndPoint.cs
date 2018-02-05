@@ -54,12 +54,12 @@ namespace InstagramCaller.Endpoints
         /// </summary>
         /// <param name="mediaid">media id</param>
         /// <returns>all comments for the media</returns>
-        public async Task<Comment> GetCommentsForMedia(string mediaid)
+        public async Task<Comment> GetCommentsForMedia(string mediaid,string accesstoken)
         {
             Comment comment = new Comment();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "media/" + mediaid + "/comments?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "media/" + mediaid + "/comments?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
@@ -86,11 +86,11 @@ namespace InstagramCaller.Endpoints
         /// <param name="mediaid">media id</param>
         /// <param name="text">comment text</param>
         /// <returns>comment</returns>
-        public async Task<Comment> POSTCommentsForMedia(string mediaid, string text)
+        public async Task<Comment> POSTCommentsForMedia(string mediaid, string text,string accesstoken)
         {
             Comment comment = new Comment();
             List<KeyValuePair<string, string>> p = new List<KeyValuePair<string, string>>();
-            p.Add(new KeyValuePair<string, string>("access_token", _AccessToken));
+            p.Add(new KeyValuePair<string, string>("access_token", accesstoken));
             p.Add(new KeyValuePair<string, string>("text", text));
             HttpContent content = new FormUrlEncodedContent(p);
 
@@ -123,12 +123,12 @@ namespace InstagramCaller.Endpoints
         /// <param name="mediaid">media id</param>
         /// <param name="commentid">comment id</param>
         /// <returns>comment</returns>
-        public async Task<Comment> DeleteCommentsForMedia(string mediaid, string commentid)
+        public async Task<Comment> DeleteCommentsForMedia(string mediaid, string commentid,string accesstoken)
         {
             Comment comment = new Comment();
             try
             {
-                _ResponseMessage = await _HttpClient.DeleteAsync(_HttpClient.BaseAddress.AbsoluteUri + "media/" + mediaid + "/comments/" + commentid + "?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.DeleteAsync(_HttpClient.BaseAddress.AbsoluteUri + "media/" + mediaid + "/comments/" + commentid + "?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();

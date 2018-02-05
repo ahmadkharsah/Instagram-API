@@ -54,12 +54,12 @@ namespace InstagramCaller.Endpoints
         /// </summary>
         /// <param name="mediaid">media id</param>
         /// <returns>media</returns>
-        public async Task<Media> GetMediaByID(string mediaid)
+        public async Task<Media> GetMediaByID(string mediaid,string accesstoken)
         {
             Media media = new Media();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "media/" + mediaid + "?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "media/" + mediaid + "?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
@@ -85,12 +85,12 @@ namespace InstagramCaller.Endpoints
         /// </summary>
         /// <param name="shortcode">shortcode</param>
         /// <returns>media</returns>
-        public async Task<Media> GetMediaByShortCode(string shortcode)
+        public async Task<Media> GetMediaByShortCode(string shortcode,string accesstoken)
         {
             Media media = new Media();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "media/shortcode/" + shortcode + "?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "media/shortcode/" + shortcode + "?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
@@ -118,10 +118,10 @@ namespace InstagramCaller.Endpoints
         /// <param name="lng">longtude</param>
         /// <param name="distance">distance less than 5000 meters</param>
         /// <returns>all media</returns>
-        public async Task<MediaSearch> MediaSearch(string lat, string lng, int? distance)
+        public async Task<MediaSearch> MediaSearch(string lat, string lng, int? distance,string accesstoken)
         {
             MediaSearch media = new MediaSearch();
-            string URL = _HttpClient.BaseAddress.AbsoluteUri + "media/search?lat=" + lat + "&lng=" + lng + "&access_token=" + _AccessToken;
+            string URL = _HttpClient.BaseAddress.AbsoluteUri + "media/search?lat=" + lat + "&lng=" + lng + "&access_token=" + accesstoken;
             if (distance != null && distance <= 5000)
             {
                 URL += "&distance=" + distance.ToString();

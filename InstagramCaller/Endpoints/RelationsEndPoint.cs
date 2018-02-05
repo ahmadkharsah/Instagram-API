@@ -64,12 +64,12 @@ namespace InstagramCaller.Endpoints
         /// get follows of current user
         /// </summary>
         /// <returns>all follows</returns>
-        public async Task<Relation> Self_GetFollows()
+        public async Task<Relation> Self_GetFollows(string accesstoken)
         {
             Relation users = new Relation();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/follows?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/follows?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
@@ -94,12 +94,12 @@ namespace InstagramCaller.Endpoints
         /// get folllowed-by users of current user
         /// </summary>
         /// <returns>followed-by users</returns>
-        public async Task<Relation> Self_GetFollowedBy()
+        public async Task<Relation> Self_GetFollowedBy(string accesstoken)
         {
             Relation users = new Relation();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/followed-by?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/followed-by?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
@@ -107,7 +107,7 @@ namespace InstagramCaller.Endpoints
                 }
                 else
                 {
-                    users.meta.code = int.Parse(_ResponseMessage.StatusCode.ToString());
+                    users.meta.code = (int) _ResponseMessage.StatusCode;
                 }
                 return users;
             }
@@ -124,12 +124,12 @@ namespace InstagramCaller.Endpoints
         /// get all users who send follow request
         /// </summary>
         /// <returns>all users who send follow request</returns>
-        public async Task<Relation> Self_GetRequestedBy()
+        public async Task<Relation> Self_GetRequestedBy(string accesstoken)
         {
             Relation users = new Relation();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/requested-by?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/self/requested-by?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
@@ -155,12 +155,12 @@ namespace InstagramCaller.Endpoints
         /// </summary>
         /// <param name="userid">other user id</param>
         /// <returns>relation's status between current user and other user</returns>
-        public async Task<RelationStatus> Self_GetRelationStatus(long userid)
+        public async Task<RelationStatus> Self_GetRelationStatus(long userid,string accesstoken)
         {
             RelationStatus status = new RelationStatus();
             try
             {
-                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/" + userid.ToString() + "/relationship?access_token=" + _AccessToken);
+                _ResponseMessage = await _HttpClient.GetAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/" + userid.ToString() + "/relationship?access_token=" + accesstoken);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
@@ -187,14 +187,13 @@ namespace InstagramCaller.Endpoints
         /// <param name="userid">other user id</param>
         /// <param name="action">action to perform on the relatioin</param>
         /// <returns>relation's status</returns>
-        public async Task<RelationStatus> Self_ModifyRelation(long userid, RelationAction action)
+        public async Task<RelationStatus> Self_ModifyRelation(string accesstoken,long userid, RelationAction action)
         {
-            HttpContent content = new StringContent("");
+            FormUrlEncodedContent content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("action",action.ToString()) });
             RelationStatus status = new RelationStatus();
             try
             {
-
-                _ResponseMessage = await _HttpClient.PostAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/" + userid.ToString() + "/relationship?access_token=" + _AccessToken + "&action=" + action.ToString(), content);
+                _ResponseMessage = await _HttpClient.PostAsync(_HttpClient.BaseAddress.AbsoluteUri + "users/" + userid.ToString() + "/relationship?access_token=" + accesstoken , content);
                 if (_ResponseMessage.IsSuccessStatusCode)
                 {
                     string responsestring = await _ResponseMessage.Content.ReadAsStringAsync();
