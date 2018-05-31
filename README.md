@@ -1,8 +1,9 @@
-# InstagramCaller
-InstagramCaller is a Library used to Call Instagram API for ASP.Net MVC.Also, InstagramCaller integrated into Azure Application Insights API, All Endpoint in the library calls the Azure Application Insights API if any Exception is occured.
+# Instagram-API
+Instagram-API is a Library used to Call Instagram API for ASP.Net MVC.
+Also, Instagram-API integrated into Azure Application Insights API, All Endpoint in the library calls the Azure Application Insights API if any Exception is occured.
 
 # Usage
-To start use InstagramCaller you need to Create Instance of the InstagramCaller Class.
+To start use Instagram-API you need to Create Instance of the InstagramCaller Class.
 
 # Version 1.0.1 
 I add a feature to the library which is the enablement of Azure Application Insights of the Application.
